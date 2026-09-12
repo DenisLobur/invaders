@@ -1,11 +1,15 @@
 use bevy::{prelude::*, window::WindowResolution};
 
+pub mod config;
+use crate::config::*;
+
+
 fn main() {
     App::new()
     .add_plugins(DefaultPlugins.set(WindowPlugin {
         primary_window: Some(Window {
             title: "Space Invaders".into(),
-            resolution: WindowResolution::new(800, 600),
+            resolution: WindowResolution::new(WINDOW_WIDTH, WINDOW_HEIGHT),
             resizable: false,
             ..default()
         }),
