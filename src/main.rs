@@ -6,12 +6,18 @@ fn main() {
         primary_window: Some(Window {
             title: "Space Invaders".into(),
             resolution: WindowResolution::new(800, 600),
+            resizable: false,
             ..default()
         }),
         ..default()
     }))
     .init_state::<GameState>()
+    .add_systems(Startup, setup_camera)
     .run();
+}
+
+fn setup_camera(mut commands: Commands) {
+    commands.spawn(Camera2d);
 }
 
 #[derive(States, Default, Clone, Eq, PartialEq, Debug, Hash)]
