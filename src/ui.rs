@@ -1,4 +1,15 @@
-use bevy::{color::Color, ecs::{change_detection::DetectChanges, component::Component, query::With, system::{Commands, Query, Res}}, text::{TextColor, TextFont}, ui::{Node, Val, widget::Text}, utils::default};
+use bevy::{
+    color::Color,
+    ecs::{
+        change_detection::DetectChanges,
+        component::Component,
+        query::With,
+        system::{Commands, Query, Res},
+    },
+    text::{TextColor, TextFont},
+    ui::{Node, Val, widget::Text},
+    utils::default,
+};
 
 use crate::state::Score;
 
@@ -8,10 +19,10 @@ pub struct ScoreText;
 pub fn setup_hud(mut commands: Commands) {
     commands.spawn((
         Node {
-        position_type: bevy::ui::PositionType::Absolute,
-        top: Val::Px(20.0),
-        left: Val::Px(20.0),
-        ..default()
+            position_type: bevy::ui::PositionType::Absolute,
+            top: Val::Px(20.0),
+            left: Val::Px(20.0),
+            ..default()
         },
         Text::new("SCORE: 0"),
         TextFont {
@@ -19,7 +30,7 @@ pub fn setup_hud(mut commands: Commands) {
             ..default()
         },
         TextColor(Color::srgb(0.2, 0.8, 0.2)),
-        ScoreText, 
+        ScoreText,
     ));
 }
 

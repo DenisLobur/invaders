@@ -36,7 +36,7 @@ pub const PROJECTILE_DESPAWN_THRESHOLD_BOTTOM: f32 = WINDOW_BOTTOM_BOUND;
 // Bunkers & UFO
 pub const BUNKER_COUNT: u32 = 4;
 pub const BUNKER_SIZE: f32 = 48.0;
-pub const BUNKER_SPACINGL: f32 = 40.0;
+pub const BUNKER_SPACING: f32 = 40.0;
 pub const BUNKER_POSITION_TOP: f32 = -200.0;
 pub const UFO_SIZE: Vec2 = Vec2::new(32.0, 24.0);
 pub const UFO_SPEED: f32 = 300.0;

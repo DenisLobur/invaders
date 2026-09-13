@@ -17,7 +17,7 @@ pub enum GameState {
     Playing,
     Paused,
     LevelClear,
-    GameOver
+    GameOver,
 }
 
 // Player's current score (defaults to 0).
