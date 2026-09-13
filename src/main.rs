@@ -4,6 +4,7 @@ use crate::state::*;
 
 pub mod config;
 pub mod state;
+pub mod ui;
 
 
 
@@ -23,6 +24,8 @@ fn main() {
     .init_resource::<Level>()
     .init_state::<GameState>()
     .add_systems(Startup, setup_camera)
+    .add_systems(Startup, ui::setup_hud)
+    .add_systems(Update, ui::update_score_hud)
     .run();
 }
 
