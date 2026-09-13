@@ -1,7 +1,10 @@
 use bevy::{prelude::*, window::WindowResolution};
+use crate::config::*;
+use crate::state::*;
 
 pub mod config;
-use crate::config::*;
+pub mod state;
+
 
 
 fn main() {
@@ -15,6 +18,9 @@ fn main() {
         }),
         ..default()
     }))
+    .init_resource::<Score>()
+    .init_resource::<Lives>()
+    .init_resource::<Level>()
     .init_state::<GameState>()
     .add_systems(Startup, setup_camera)
     .run();
@@ -22,13 +28,4 @@ fn main() {
 
 fn setup_camera(mut commands: Commands) {
     commands.spawn(Camera2d);
-}
-
-#[derive(States, Default, Clone, Eq, PartialEq, Debug, Hash)]
-enum GameState {
-    #[default]
-    Menu,
-    Playing,
-    Paused,
-    GameOver
 }
