@@ -1,8 +1,10 @@
 use crate::config::*;
+use crate::player::PlayerPlugin;
 use crate::state::*;
 use bevy::{prelude::*, window::WindowResolution};
 
 pub mod config;
+pub mod player;
 pub mod state;
 pub mod ui;
 
@@ -17,6 +19,7 @@ fn main() {
             }),
             ..default()
         }))
+        .add_plugins(PlayerPlugin)
         .init_resource::<Score>()
         .init_resource::<Lives>()
         .init_resource::<Level>()

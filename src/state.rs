@@ -11,9 +11,10 @@ use bevy::{ecs::resource::Resource, state::state::States};
 
 #[derive(States, Default, Clone, Eq, PartialEq, Debug, Hash)]
 pub enum GameState {
-    #[default]
+    // #[default] // todo: revert when initial state is Loading
     Loading,
     Menu,
+    #[default] // set Playing as default for now
     Playing,
     Paused,
     LevelClear,
