@@ -12,6 +12,7 @@ pub const INVASION_FLOOR_LINE: f32 = 248.0;
 // Player
 pub const PLAYER_SIZE: Vec2 = Vec2::new(48.0, 32.0);
 pub const PLAYER_Y_POSITION: f32 = -240.0;
+pub const PLAYER_X_POSITION: f32 = 0.0;
 pub const PLAYER_SPEED: f32 = 300.0;
 pub const PLAYER_LEFT_MOVEMENT_BOUND: f32 = WINDOW_LEFT_BOUND;
 pub const PLAYER_RIGHT_MOVEMENT_BOUND: f32 = WINDOW_RIGHT_BOUND;
@@ -28,6 +29,7 @@ pub const ALIEN_DESCENT_STEP_DISTANCE: f32 = -16.0;
 
 // Projectiles (Player bullets & Aliens bombs)
 pub const BULLET_SIZE: Vec2 = Vec2::new(4.0, 12.0);
+pub const BULLET_SPEED: f32 = 300.0;
 pub const BOMB_SIZE: f32 = 250.0;
 pub const BOMB_SPEED: f32 = 250.0;
 pub const PROJECTILE_DESPAWN_THRESHOLD_TOP: f32 = WINDOW_TOP_BOUND;
