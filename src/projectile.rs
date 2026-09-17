@@ -11,11 +11,12 @@ use bevy::{
     input::{ButtonInput, common_conditions::input_just_pressed, keyboard::KeyCode},
     sprite::Sprite,
     state::condition::in_state,
+    time::Time,
     transform::components::Transform,
 };
 
 use crate::{
-    config::{BULLET_HEIGHT, BULLET_SIZE, PLAYER_HEIGHT},
+    config::{BULLET_HEIGHT, BULLET_SIZE, BULLET_SPEED, PLAYER_HEIGHT},
     player::Player,
     state::GameState,
 };
@@ -47,6 +48,12 @@ pub fn remove_bullet(mut commands: Commands, query: Query<Entity, With<PlayerBul
     }
 }
 
+pub fn move_bullet(mut query: Query<&mut Transform, With<PlayerBullet>>, time: Res<Time>) {
+    for mut bullet in &mut query {
+        bullet.translation.y += BULLET_SPEED * time.delta_secs();
+    }
+}
+
 pub fn check_if_bullet_exists(
     commands: Commands,
     input: Res<ButtonInput<KeyCode>>,
@@ -74,5 +81,6 @@ impl Plugin for ProjectilePlugin {
             Update,
             remove_bullet.run_if(input_just_pressed(KeyCode::KeyS)),
         );
+        app.add_systems(Update, move_bullet.run_if(in_state(GameState::Playing)));
     }
 }
