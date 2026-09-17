@@ -1,10 +1,12 @@
 use crate::config::*;
 use crate::player::PlayerPlugin;
+use crate::projectile::ProjectilePlugin;
 use crate::state::*;
 use bevy::{prelude::*, window::WindowResolution};
 
 pub mod config;
 pub mod player;
+pub mod projectile;
 pub mod state;
 pub mod ui;
 
@@ -20,6 +22,7 @@ fn main() {
             ..default()
         }))
         .add_plugins(PlayerPlugin)
+        .add_plugins(ProjectilePlugin)
         .init_resource::<Score>()
         .init_resource::<Lives>()
         .init_resource::<Level>()

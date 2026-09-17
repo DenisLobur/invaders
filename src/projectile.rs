@@ -1,24 +1,78 @@
 use bevy::{
+    app::{Plugin, Update},
+    color::Color,
     ecs::{
-        system::{Commands},
+        component::Component,
+        entity::Entity,
+        query::With,
+        schedule::IntoScheduleConfigs,
+        system::{Commands, Query, Res},
     },
+    input::{ButtonInput, common_conditions::input_just_pressed, keyboard::KeyCode},
+    sprite::Sprite,
+    state::condition::in_state,
+    transform::components::Transform,
 };
 
 use crate::{
-    config::{
-        BULLET_SIZE
-    },
+    config::{BULLET_HEIGHT, BULLET_SIZE, PLAYER_HEIGHT},
+    player::Player,
     state::GameState,
 };
 
 #[derive(Component)]
-pub struct Bullet;
+pub struct PlayerBullet;
 
-pub fn spawn_bullet(mut commands: Commands) {
-    commands.spawn((
-        Sprite::from_color(Color::srgb(0.0, 0.0, 0.5), BULLET_SIZE),
-        Transform::from_xyz(PLAYER_X_POSITION / 2.0, PLAYER_Y_POSITION, 0.0),
-        Bullet,
-    ))
+pub fn spawn_bullet(mut commands: Commands, player_query: Query<&Transform, With<Player>>) {
+    if let Ok(player_transform) = player_query.single() {
+        let player_x = player_transform.translation.x;
+        let player_y = player_transform.translation.y;
+
+        commands.spawn((
+            Sprite::from_color(Color::srgb(0.0, 0.0, 0.5), BULLET_SIZE),
+            Transform::from_xyz(
+                player_x,
+                player_y + PLAYER_HEIGHT / 2.0 + BULLET_HEIGHT / 2.0,
+                0.0,
+            ),
+            PlayerBullet,
+        ));
+    }
 }
 
+// testing purposes
+pub fn remove_bullet(mut commands: Commands, query: Query<Entity, With<PlayerBullet>>) {
+    for bullet in query {
+        commands.entity(bullet).despawn();
+    }
+}
+
+pub fn check_if_bullet_exists(
+    commands: Commands,
+    input: Res<ButtonInput<KeyCode>>,
+    player_query: Query<&Transform, With<Player>>,
+    query: Query<Entity, With<PlayerBullet>>,
+) {
+    if input.just_pressed(KeyCode::Space) {
+        let bullet_exists = query.iter().next().is_some();
+
+        if !bullet_exists {
+            spawn_bullet(commands, player_query);
+        }
+    }
+}
+
+pub struct ProjectilePlugin;
+
+impl Plugin for ProjectilePlugin {
+    fn build(&self, app: &mut bevy::app::App) {
+        app.add_systems(
+            Update,
+            check_if_bullet_exists.run_if(in_state(GameState::Playing)),
+        );
+        app.add_systems(
+            Update,
+            remove_bullet.run_if(input_just_pressed(KeyCode::KeyS)),
+        );
+    }
+}
