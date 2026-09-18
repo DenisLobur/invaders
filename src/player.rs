@@ -1,19 +1,15 @@
 use bevy::{
-    app::{Plugin, Update},
+    app::Plugin,
     color::Color,
     ecs::{
         component::Component,
         entity::Entity,
         query::With,
-        schedule::IntoScheduleConfigs,
         system::{Commands, Query, Res},
     },
     input::{ButtonInput, keyboard::KeyCode},
     sprite::Sprite,
-    state::{
-        condition::in_state,
-        state::{OnEnter, OnExit},
-    },
+    state::state::{OnEnter, OnExit},
     time::Time,
     transform::components::Transform,
 };
@@ -43,7 +39,7 @@ pub fn cleanup_player(mut commands: Commands, player_query: Query<Entity, With<P
     }
 }
 
-pub fn move_palyer(
+pub fn move_player(
     mut query: Query<&mut Transform, With<Player>>,
     input: Res<ButtonInput<KeyCode>>,
     time: Res<Time>,
@@ -76,6 +72,5 @@ impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut bevy::app::App) {
         app.add_systems(OnEnter(GameState::Playing), spawn_player);
         app.add_systems(OnExit(GameState::Playing), cleanup_player);
-        app.add_systems(Update, move_palyer.run_if(in_state(GameState::Playing)));
     }
 }

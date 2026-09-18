@@ -1,22 +1,23 @@
 use bevy::{
-    app::{Plugin, Update},
+    app::Plugin,
     color::Color,
     ecs::{
         component::Component,
         entity::Entity,
         query::With,
-        schedule::IntoScheduleConfigs,
         system::{Commands, Query, Res},
     },
     input::{ButtonInput, keyboard::KeyCode},
     sprite::Sprite,
-    state::condition::in_state,
     time::Time,
     transform::components::Transform,
 };
 
 use crate::{
-    config::{BULLET_HEIGHT, BULLET_SIZE, BULLET_SPEED, PLAYER_HEIGHT, PROJECTILE_DESPAWN_THRESHOLD_TOP}, player::Player, state::GameState,
+    config::{
+        BULLET_HEIGHT, BULLET_SIZE, BULLET_SPEED, PLAYER_HEIGHT, PROJECTILE_DESPAWN_THRESHOLD_TOP,
+    },
+    player::Player,
 };
 
 #[derive(Component)]
@@ -45,13 +46,13 @@ fn despawn_bullet(mut commands: Commands, bullet_query: Query<Entity, With<Playe
     }
 }
 
-fn move_bullet(mut query: Query<&mut Transform, With<PlayerBullet>>, time: Res<Time>) {
+pub fn move_bullet(mut query: Query<&mut Transform, With<PlayerBullet>>, time: Res<Time>) {
     for mut bullet in &mut query {
         bullet.translation.y += BULLET_SPEED * time.delta_secs();
     }
 }
 
-fn check_if_bullet_exists(
+pub fn check_if_bullet_exists(
     commands: Commands,
     input: Res<ButtonInput<KeyCode>>,
     player_query: Query<&Transform, With<Player>>,
@@ -66,7 +67,7 @@ fn check_if_bullet_exists(
     }
 }
 
-fn check_if_bullet_outside_arena(
+pub fn check_if_bullet_outside_arena(
     commands: Commands,
     query: Query<&Transform, With<PlayerBullet>>,
     bullet_query: Query<Entity, With<PlayerBullet>>,
@@ -83,15 +84,5 @@ fn check_if_bullet_outside_arena(
 pub struct ProjectilePlugin;
 
 impl Plugin for ProjectilePlugin {
-    fn build(&self, app: &mut bevy::app::App) {
-        app.add_systems(
-            Update,
-            check_if_bullet_exists.run_if(in_state(GameState::Playing)),
-        );
-        app.add_systems(Update, move_bullet.run_if(in_state(GameState::Playing)));
-        app.add_systems(
-            Update,
-            check_if_bullet_outside_arena.run_if(in_state(GameState::Playing)),
-        );
-    }
+    fn build(&self, _app: &mut bevy::app::App) {}
 }
