@@ -31,7 +31,7 @@ pub struct Player;
 
 pub fn spawn_player(mut commands: Commands) {
     commands.spawn((
-        Sprite::from_color(Color::srgb(0.0, 0.0, 1.0), PLAYER_SIZE),
+        Sprite::from_color(Color::srgb(0.0, 0.0, 0.5), PLAYER_SIZE),
         Transform::from_xyz(PLAYER_X_POSITION, PLAYER_Y_POSITION, 0.0),
         Player,
     ));

@@ -8,7 +8,7 @@ use bevy::{
         schedule::IntoScheduleConfigs,
         system::{Commands, Query, Res},
     },
-    input::{ButtonInput, common_conditions::input_just_pressed, keyboard::KeyCode},
+    input::{ButtonInput, keyboard::KeyCode},
     sprite::Sprite,
     state::condition::in_state,
     time::Time,
@@ -16,21 +16,19 @@ use bevy::{
 };
 
 use crate::{
-    config::{BULLET_HEIGHT, BULLET_SIZE, BULLET_SPEED, PLAYER_HEIGHT},
-    player::Player,
-    state::GameState,
+    config::{BULLET_HEIGHT, BULLET_SIZE, BULLET_SPEED, PLAYER_HEIGHT, PROJECTILE_DESPAWN_THRESHOLD_TOP}, player::Player, state::GameState,
 };
 
 #[derive(Component)]
 pub struct PlayerBullet;
 
-pub fn spawn_bullet(mut commands: Commands, player_query: Query<&Transform, With<Player>>) {
+fn spawn_bullet(mut commands: Commands, player_query: Query<&Transform, With<Player>>) {
     if let Ok(player_transform) = player_query.single() {
         let player_x = player_transform.translation.x;
         let player_y = player_transform.translation.y;
 
         commands.spawn((
-            Sprite::from_color(Color::srgb(0.0, 0.0, 0.5), BULLET_SIZE),
+            Sprite::from_color(Color::srgb(0.0, 0.0, 1.0), BULLET_SIZE),
             Transform::from_xyz(
                 player_x,
                 player_y + PLAYER_HEIGHT / 2.0 + BULLET_HEIGHT / 2.0,
@@ -41,20 +39,19 @@ pub fn spawn_bullet(mut commands: Commands, player_query: Query<&Transform, With
     }
 }
 
-// testing purposes
-pub fn remove_bullet(mut commands: Commands, query: Query<Entity, With<PlayerBullet>>) {
-    for bullet in query {
+fn despawn_bullet(mut commands: Commands, bullet_query: Query<Entity, With<PlayerBullet>>) {
+    for bullet in &bullet_query {
         commands.entity(bullet).despawn();
     }
 }
 
-pub fn move_bullet(mut query: Query<&mut Transform, With<PlayerBullet>>, time: Res<Time>) {
+fn move_bullet(mut query: Query<&mut Transform, With<PlayerBullet>>, time: Res<Time>) {
     for mut bullet in &mut query {
         bullet.translation.y += BULLET_SPEED * time.delta_secs();
     }
 }
 
-pub fn check_if_bullet_exists(
+fn check_if_bullet_exists(
     commands: Commands,
     input: Res<ButtonInput<KeyCode>>,
     player_query: Query<&Transform, With<Player>>,
@@ -69,6 +66,20 @@ pub fn check_if_bullet_exists(
     }
 }
 
+fn check_if_bullet_outside_arena(
+    commands: Commands,
+    query: Query<&Transform, With<PlayerBullet>>,
+    bullet_query: Query<Entity, With<PlayerBullet>>,
+) {
+    for bullet_transform in &query {
+        let bullet_y = bullet_transform.translation.y;
+        if bullet_y - BULLET_HEIGHT / 2.0 > PROJECTILE_DESPAWN_THRESHOLD_TOP {
+            despawn_bullet(commands, bullet_query);
+            break;
+        }
+    }
+}
+
 pub struct ProjectilePlugin;
 
 impl Plugin for ProjectilePlugin {
@@ -77,10 +88,10 @@ impl Plugin for ProjectilePlugin {
             Update,
             check_if_bullet_exists.run_if(in_state(GameState::Playing)),
         );
+        app.add_systems(Update, move_bullet.run_if(in_state(GameState::Playing)));
         app.add_systems(
             Update,
-            remove_bullet.run_if(input_just_pressed(KeyCode::KeyS)),
+            check_if_bullet_outside_arena.run_if(in_state(GameState::Playing)),
         );
-        app.add_systems(Update, move_bullet.run_if(in_state(GameState::Playing)));
     }
 }

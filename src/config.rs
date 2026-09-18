@@ -5,8 +5,8 @@ pub const WINDOW_WIDTH: u32 = 800;
 pub const WINDOW_HEIGHT: u32 = 600;
 pub const WINDOW_LEFT_BOUND: f32 = -360.0;
 pub const WINDOW_RIGHT_BOUND: f32 = 360.0;
-pub const WINDOW_TOP_BOUND: f32 = -280.0;
-pub const WINDOW_BOTTOM_BOUND: f32 = 280.0;
+pub const WINDOW_TOP_BOUND: f32 = 280.0;
+pub const WINDOW_BOTTOM_BOUND: f32 = -280.0;
 pub const INVASION_FLOOR_LINE: f32 = 248.0;
 
 // Player
