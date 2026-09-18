@@ -9,6 +9,7 @@ use bevy::{
     },
     input::{ButtonInput, keyboard::KeyCode},
     sprite::Sprite,
+    state::state::OnExit,
     time::Time,
     transform::components::Transform,
 };
@@ -18,6 +19,7 @@ use crate::{
         BULLET_HEIGHT, BULLET_SIZE, BULLET_SPEED, PLAYER_HEIGHT, PROJECTILE_DESPAWN_THRESHOLD_TOP,
     },
     player::Player,
+    state::GameState,
 };
 
 #[derive(Component)]
@@ -84,5 +86,7 @@ pub fn check_if_bullet_outside_arena(
 pub struct ProjectilePlugin;
 
 impl Plugin for ProjectilePlugin {
-    fn build(&self, _app: &mut bevy::app::App) {}
+    fn build(&self, app: &mut bevy::app::App) {
+        app.add_systems(OnExit(GameState::Playing), despawn_bullet);
+    }
 }

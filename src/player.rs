@@ -25,7 +25,7 @@ use crate::{
 #[derive(Component)]
 pub struct Player;
 
-pub fn spawn_player(mut commands: Commands) {
+fn spawn_player(mut commands: Commands) {
     commands.spawn((
         Sprite::from_color(Color::srgb(0.0, 0.0, 0.5), PLAYER_SIZE),
         Transform::from_xyz(PLAYER_X_POSITION, PLAYER_Y_POSITION, 0.0),
@@ -33,7 +33,7 @@ pub fn spawn_player(mut commands: Commands) {
     ));
 }
 
-pub fn cleanup_player(mut commands: Commands, player_query: Query<Entity, With<Player>>) {
+fn despawn_player(mut commands: Commands, player_query: Query<Entity, With<Player>>) {
     for player_entity in &player_query {
         commands.entity(player_entity).despawn();
     }
@@ -71,6 +71,6 @@ pub struct PlayerPlugin;
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut bevy::app::App) {
         app.add_systems(OnEnter(GameState::Playing), spawn_player);
-        app.add_systems(OnExit(GameState::Playing), cleanup_player);
+        app.add_systems(OnExit(GameState::Playing), despawn_player);
     }
 }

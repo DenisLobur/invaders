@@ -1,5 +1,7 @@
 use crate::player::PlayerPlugin;
-use crate::projectile::{check_if_bullet_exists, check_if_bullet_outside_arena, move_bullet};
+use crate::projectile::{
+    ProjectilePlugin, check_if_bullet_exists, check_if_bullet_outside_arena, move_bullet,
+};
 use crate::state::*;
 use crate::{config::*, player::move_player};
 use bevy::{prelude::*, window::WindowResolution};
@@ -30,6 +32,7 @@ fn main() {
             ..default()
         }))
         .add_plugins(PlayerPlugin)
+        .add_plugins(ProjectilePlugin)
         .init_resource::<Score>()
         .init_resource::<Lives>()
         .init_resource::<Level>()
