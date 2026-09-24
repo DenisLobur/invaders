@@ -1,4 +1,5 @@
 use bevy::{
+    camera::Camera2d,
     color::Color,
     ecs::{
         change_detection::DetectChanges,
@@ -40,4 +41,8 @@ pub fn update_score_hud(score: Res<Score>, mut query: Query<&mut Text, With<Scor
             **text = format!("SCORE: {:04}", score.0);
         }
     }
+}
+
+pub fn setup_camera(mut commands: Commands) {
+    commands.spawn(Camera2d);
 }

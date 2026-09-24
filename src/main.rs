@@ -3,6 +3,7 @@ use crate::projectile::{
     ProjectilePlugin, check_if_bullet_exists, check_if_bullet_outside_arena, move_bullet,
 };
 use crate::state::*;
+use crate::ui::setup_camera;
 use crate::{config::*, player::move_player};
 use bevy::{prelude::*, window::WindowResolution};
 
@@ -75,8 +76,4 @@ fn main() {
                 .in_set(GameFlowSet::BulletCleanup),
         )
         .run();
-}
-
-fn setup_camera(mut commands: Commands) {
-    commands.spawn(Camera2d);
 }
