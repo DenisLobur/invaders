@@ -25,7 +25,7 @@ pub const ALIEN_COLUMN: u32 = 11; // grid structure 5 rows x 11 columns
 pub const ALIEN_SPACING_HORIZONTAL: f32 = 48.0;
 pub const ALIEN_SPACING_VERTICAL: f32 = 36.0;
 pub const ALIEN_INITIAL_FORMATION_X: f32 = -240.0;
-pub const ALIEN_INITIAL_FORMATION_Y: f32 = 200.0;
+pub const ALIEN_INITIAL_FORMATION_Y: f32 = 100.0;
 pub const ALIEN_DESCENT_STEP_DISTANCE: f32 = -16.0;
 
 // Projectiles (Player bullets & Aliens bombs)

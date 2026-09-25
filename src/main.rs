@@ -1,3 +1,4 @@
+use crate::alien::AlienPlugin;
 use crate::player::PlayerPlugin;
 use crate::projectile::{
     ProjectilePlugin, check_if_bullet_exists, check_if_bullet_outside_arena, move_bullet,
@@ -7,6 +8,7 @@ use crate::ui::setup_camera;
 use crate::{config::*, player::move_player};
 use bevy::{prelude::*, window::WindowResolution};
 
+pub mod alien;
 pub mod config;
 pub mod player;
 pub mod projectile;
@@ -34,6 +36,7 @@ fn main() {
         }))
         .add_plugins(PlayerPlugin)
         .add_plugins(ProjectilePlugin)
+        .add_plugins(AlienPlugin)
         .init_resource::<Score>()
         .init_resource::<Lives>()
         .init_resource::<Level>()
